@@ -254,15 +254,14 @@ void draw_shadow(TetPiece const& curr_p, OccupancyGrid const& o)
 	p.set_colr(ColorRGB(0.03, 0.03, 0.03));
 	draw_tet_piece(p);
 }
-void draw_stroked_string(char* str)
+void draw_stroked_string(const char* str)
 {
 	glPushMatrix();
 	glScalef(.0085, .0085, .0085);
-	char* c = str;
 	size_t i = 0;
-	while (c[i] != '\0')
+	while (str[i] != '\0')
 	{
-		glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN, c[i]);
+		glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN, str[i]);
 		i++;
 	}
 	glPopMatrix();
