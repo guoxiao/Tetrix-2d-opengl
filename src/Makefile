@@ -7,4 +7,6 @@ tetrix: Main.o Color.o Tetris.o
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $^ -o $@
 
 clean:
-	rm *.o tetrix
+	rm -f *.o tetrix
+
+.PHONY: all clean
