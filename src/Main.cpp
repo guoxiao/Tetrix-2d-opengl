@@ -7,7 +7,7 @@
 #include <glut.h>
 #include <vector>
 #include <ctime>
-#include <conio.h>
+#include <string.h>
 
 
 #include "Tetris.h"
@@ -54,7 +54,7 @@ void generate_random_piece(TetPiece& p);
 
 int main(int argc, char** argv)
 {
-	
+
 	/*if (argc < 2) {
 		std::cout << "Usage: tetris <pieces file> [<shadow enable>]" << std::endl;
 		exit(0);
@@ -64,7 +64,7 @@ int main(int argc, char** argv)
 		shadow_enable = atoi(argv[2]);
 	}
 
-	if (load_piece_config_file("PieceConfig.bin", tetris_pieces) == -1) 
+	if (load_piece_config_file("PieceConfig.bin", tetris_pieces) == -1)
 	{
 		std::cerr << "Error loading Pieces Configuration file" << std::endl;
 		exit(1);
@@ -81,10 +81,10 @@ int main(int argc, char** argv)
 	vw_ymax = board_h + 6;
 
 	generate_random_piece(curr_piece);
-	generate_random_piece(next_piece);	
+	generate_random_piece(next_piece);
 	load_max_score("max_score.bin");
-	
-	initialize();		
+
+	initialize();
 	glutDisplayFunc(display_handler);
 	glutReshapeFunc(reshape_handler);
 	glutKeyboardFunc(keyboard_handler);
@@ -99,11 +99,11 @@ void initialize()
 {
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glShadeModel(GL_FLAT);
-		
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluOrtho2D(vw_xmin, vw_xmax, vw_ymin, vw_ymax);
-	
+
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
@@ -137,7 +137,7 @@ int load_piece_config_file(std::string file_name, vector<TetPiece>& tetris_piece
 
 	fscanf(piece_file, "%u", &n);
 	//std::cout << n << std::endl;
-	
+
 	fscanf(piece_file, "%s", buffer);
 	fscanf(piece_file, "%u", &w);
 	//std::cout << w << std::endl;
@@ -146,7 +146,7 @@ int load_piece_config_file(std::string file_name, vector<TetPiece>& tetris_piece
 	fscanf(piece_file, "%u", &h);
 	//std::cout << h << std::endl;
 
-	
+
 	for (size_t i = 0; i < n; ++i)
 	{
 		TetPiece piece;
@@ -186,7 +186,7 @@ int load_piece_config_file(std::string file_name, vector<TetPiece>& tetris_piece
 		}
 		tetris_pieces.push_back(piece);
 	}
-	
+
 	fclose(piece_file);
 	return 1;
 }
@@ -229,7 +229,7 @@ void draw_tet_piece(TetPiece const& curr_p)
 	{
 		draw_unit_block(pos.x + blocks[i].x, pos.y + blocks[i].y);
 	}
-	
+
 }
 void draw_occupancy_grid(OccupancyGrid const& og)
 {
@@ -301,7 +301,7 @@ void display_handler()
 
 	//Drawing next piece
 	glPushMatrix();
-	glTranslated(0, 4, 0);	
+	glTranslated(0, 4, 0);
 	draw_tet_piece(next_piece);
 	glPopMatrix();
 
@@ -339,7 +339,7 @@ void display_handler()
 	sprintf(buff, "%d", max_score);
 	glTranslatef(0, -1.5, 0);
 	draw_stroked_string(buff);
-	
+
 	glColor3f(1.0f, 1.0f, 0.0f);
 	glTranslatef(0, -3, 0);
 	draw_stroked_string("Score: ");
@@ -407,19 +407,19 @@ void keyboard_handler(unsigned char key, int x, int y)
 		break;
 
 	case 32: if (!is_game_over) {
-		     fast_drop = true; 
+		     fast_drop = true;
 		     drop_delay = 25;
 		}
 		      /*while (can_move(curr_piece, 0, -1, game_grid))
 			 {
 			     //curr_piece.move_down();
 			     //glutPostRedisplay();
-				  game_update_handler();				 
+				  game_update_handler();
 			  }*/
 		break;
 
     case 13: if (is_game_over) game_reset();
-        break; 
+        break;
 
 	case 'S':
 	case 's': shadow_enable = !shadow_enable;
@@ -434,7 +434,7 @@ void keyboard_handler(unsigned char key, int x, int y)
 		std::cout << "   SPACE						 = DROP PIECE     " << std::endl;
 		std::cout << "   S							 = TOGGLE SHADOW  " << std::endl;
 		std::cout << "   ESC						 = QUIT			  " << std::endl;
-		
+
 		break;
 	default:
 		break;
@@ -456,7 +456,7 @@ void special_keys_handler(int key, int x, int y)
 						 {
 							curr_piece.move_right();
 							glutPostRedisplay();
-						 }						
+						 }
 		break;
 
 	case GLUT_KEY_DOWN: if (can_move(curr_piece, 0, -1, game_grid))
@@ -466,7 +466,7 @@ void special_keys_handler(int key, int x, int y)
 						}
 		break;
 
-	case GLUT_KEY_UP:   
+	case GLUT_KEY_UP:
 		if (can_rotate(curr_piece, game_grid) && !is_game_over)
 		{
 			curr_piece.rotate();
@@ -476,7 +476,7 @@ void special_keys_handler(int key, int x, int y)
 
 	case GLUT_KEY_F1:
 		break;
-	 
+
 	};
 }
 
@@ -491,8 +491,8 @@ void game_reset()
 	if (shadow_enable) shadow_enable = false;
 	game_grid.initialize();
 	generate_random_piece(curr_piece);
-	generate_random_piece(next_piece);	
-	
+	generate_random_piece(next_piece);
+
 }
 void game_update_handler()
 {
@@ -518,16 +518,16 @@ void game_update_handler()
 
 	if (can_move(curr_piece, 0, -1, game_grid))
 	{
-		curr_piece.move_down();  
+		curr_piece.move_down();
 	}
 	else {
 		game_grid.deposit(curr_piece);
 		glutPostRedisplay();
-		
+
 		curr_piece = next_piece;
 		generate_random_piece(next_piece);
 
-		if (fast_drop) { 
+		if (fast_drop) {
 			fast_drop = false;
 			drop_delay = 900 - level * 100;
 	    }
@@ -545,7 +545,7 @@ void game_update_handler()
 		}
 
 		score += level * num_lines_cleared * num_lines_cleared * 10;
-		
+
 		if (score > max_score)
 			max_score = score;
 	}
@@ -554,4 +554,4 @@ void game_update_handler()
 }
 
 
- 
+
