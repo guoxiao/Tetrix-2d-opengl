@@ -5,3 +5,6 @@ all: tetrix
 
 tetrix: Main.o Color.o Tetris.o
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $^ -o $@
+
+clean:
+	rm *.o tetrix
