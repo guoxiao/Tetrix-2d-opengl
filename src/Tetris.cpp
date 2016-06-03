@@ -3,14 +3,14 @@
 namespace cs {
 
 	TetPiece::TetPiece()
-	{ 
-		rot_angle = 0.0; 
-		position.x = position.y = 0.0; 
+	{
+		rot_angle = 0.0;
+		position.x = position.y = 0.0;
 		colr = generate_random_color();
 	}
 
 	TetPiece::TetPiece(std::string name, size_t w, size_t h)
-		: name(name), width(w), height(h) 
+		: name(name), width(w), height(h)
 	{
 		center.x = width / 2;
 		center.y = height / 2;
@@ -35,7 +35,7 @@ namespace cs {
 
 		return *this;
 	}
-		
+
 	void TetPiece::set_name(std::string const& s)
 	{
 		name = s;
@@ -60,12 +60,12 @@ namespace cs {
 	{
 		position = pos;
 	}
-		
+
 	std::string TetPiece::get_name() const
 	{
 		return name;
 	}
-	
+
 	std::string TetPiece::get_color() const
 	{
 		return color;
@@ -75,17 +75,17 @@ namespace cs {
 	{
 		return colr;
 	}
-	
+
 	Point2 TetPiece::get_center() const
 	{
 		return center;
 	}
-	
+
 	size_t TetPiece::get_width() const
 	{
 		return width;
 	}
-	
+
 	size_t TetPiece::get_height() const
 	{
 		return height;
@@ -100,25 +100,25 @@ namespace cs {
 	{
 		return center_block_index;
 	}
-	
+
 	vector<Point2> const& TetPiece::piece_blocks() const
 	{
 		return occupied_blocks;
 	}
-		
+
 	TetPiece& TetPiece::rotate()
 	{
 		if (name.compare("O") != 0)
 		for (size_t i = 0; i < occupied_blocks.size(); i++)
 			rotate_pt(occupied_blocks[i]);
-		
+
 		rot_angle += 90.0;
 		if (rot_angle >= 360.0)
 			rot_angle -= 360.0;
 
 		return *this;
 	}
-		
+
 	TetPiece& TetPiece::move_down()
 	{
 		position.y -= 1.0;
@@ -136,29 +136,29 @@ namespace cs {
 		position.x += 1.0;
 		return *this;
 	}
-		
+
 	void TetPiece::set_center_index(size_t i)
 	{
 		center_block_index = i;
 	}
-		
+
 	TetPiece& TetPiece::add_block(Point2 p)
 	{
 		occupied_blocks.push_back(p);
 		return *this;
 	}
-		
+
 	size_t TetPiece::get_current_num_blocks() const
 	{
 		return occupied_blocks.size();
 	}
 
-	
+
 	//Private Functions
 	TetPiece& TetPiece::translate_pt(Point2& p, int dx, int dy)
 	{
-		GLfloat trans_matrix[3][3] = {{1.0f, 0.0f, dx},
-									  {0.0f, 1.0f, dy},
+		GLfloat trans_matrix[3][3] = {{1.0f, 0.0f, static_cast<float>(dx)},
+									  {0.0f, 1.0f, static_cast<float>(dy)},
 									  {0.0f, 0.0f, 1.0f}};
 		Point2 np;
 		np.x = p.x * trans_matrix[0][0] + p.y * trans_matrix[0][1] + trans_matrix[0][2];
@@ -183,11 +183,11 @@ namespace cs {
 	}
 
 	/////////////////////////////////////////////////////////////
-			
+
 					// OCCUPANCY GRID //
 
 	/////////////////////////////////////////////////////////////
-    
+
     OccupancyGrid::OccupancyGrid(size_t width, size_t height) : width(width), height(height)
 	{
 		cells = new occupancy_cell*[height];
@@ -225,7 +225,7 @@ namespace cs {
 			return false;
 		return true;
 	}
-	size_t OccupancyGrid::get_height() const 
+	size_t OccupancyGrid::get_height() const
 	{
 		return height;
 	}
@@ -264,7 +264,7 @@ namespace cs {
 					break;
 				cell_count++;
 			}
-			if (cell_count == width) 
+			if (cell_count == width)
 			{
 			//	animate_line(i);
 				drop_down(i);
@@ -286,14 +286,14 @@ namespace cs {
 				cells[i][j] = cells[i + 1][j];
 			}
 		}
-		
+
 		for (size_t i = 0; i < width; i++)
 		{
 			cells[height - 1][i].v = -1;
 			cells[height - 1][i].c = ColorRGB(0.0f, 0.0f, 0.0f);
 		}
 	}
-    
+
     // To Do
     /* void OccupancyGrid::animate_line(size_t ln)
 	{
@@ -330,7 +330,7 @@ namespace cs {
 		{
 			int r_index = pos.y + dy + blocks[i].y;
 			int c_index = pos.x + dx + blocks[i].x;
-			
+
 			if (!og.is_valid_cell(r_index, c_index))
 				return false;
 
@@ -338,7 +338,7 @@ namespace cs {
 			if (cell.v != -1)
 				return false;
 		}
-		
+
 		return true;
 	}
 
